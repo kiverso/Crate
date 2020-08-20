@@ -23,7 +23,11 @@
     "url": "https://github.com/atulmy/crate/issues"
   },
   "homepage": "https://github.com/atulmy/crate#readme",
-  "dependencies": {},
+  "dependencies": {
+    "react-redux": "^7.2.1",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.8"
+  },
   "devDependencies": {
     "concurrently": "^4.1.0"
   }
