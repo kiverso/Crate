@@ -159,4 +159,31 @@ describe('product query', () => {
     expect(response.body.data.productById.id).toEqual(1);
     expect(response.body.data.productById.style).toEqual("artsy");
   })
+
+  it("returns a product by slug", async () => {
+    const response = await request(server)
+      .get('/')
+      .send({ query: '{product (slug: "rainbow-shoes") {name slug}}'});
+   
+    expect(response.body.data.product.name).toEqual("Rainbow Shoes");
+    expect(response.body.data.product.slug).toEqual("rainbow-shoes");
+  })
+
+  it("returns a product by type", async () => {
+    const response = await request(server)
+      .get("/")
+      .send({ query: "{productTypes  {name}}" })
+
+    expect(response.body.data.productTypes.length).toEqual(2);
+    expect(response.body.data.productTypes[0].name).toEqual("Cloth");
+    expect(response.body.data.productTypes[1].name).toEqual("Accessories");
+  })
+
+  it("returns a related product", async () => {
+    const response = await request(server)
+      .get("/")
+      .send({ query: "{productsRelated (productId: 123) { name type id }}" })
+
+    expect(response.body.data.productsRelated).toEqual(null);
+  })
 })
