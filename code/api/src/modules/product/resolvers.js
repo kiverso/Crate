@@ -45,12 +45,13 @@ export async function getProductOnSurvey(parentValue, { productSurvey }) {
 
 // Get related products
 export async function getRelated(parentValue, { productId }) {
+  const product = await models.Product.findOne({ where: productId })
   return await models.Product.findAll({
     where: {
-      id: { [models.Sequelize.Op.not]: productId }
+      style: product.style,
+      id: { [models.Sequelize.Op.not] : product.id }
     },
-    limit: 3,
-    order: [[models.Sequelize.fn('RAND')]] // mock related products by showing random products
+    limit: 3
   })
 }
 
