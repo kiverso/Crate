@@ -122,7 +122,8 @@ describe('product query', () => {
     })
     .expect(200)
 
-    expect(response.body.data.productSurveyTrue.length).toEqual(2)
+    expect(response.body.data.productSurveyTrue.length).toEqual(2);
+    expect(response.body.data.productSurveyTrue.length).not.toEqual(5);
   })
 
   it("returns products with isSurvey: true", async () => {
@@ -137,7 +138,8 @@ describe('product query', () => {
       })
       .expect(200)
 
-    expect(response.body.data.productSurveyTrue.length).toEqual(3)
+    expect(response.body.data.productSurveyTrue.length).toEqual(3);
+    expect(response.body.data.productSurveyTrue.length).not.toEqual(5);
   })
 
   it("returns all products", async () => {
@@ -146,6 +148,7 @@ describe('product query', () => {
       .send({ query: '{products {name id style category}}' })
   
     expect(response.body.data.products.length).toEqual(5);
+    expect(response.body.data.products.length).not.toEqual(3);
     expect(response.body.data.products[0].name).toEqual("Colorblock Top");
     expect(response.body.data.products[4].name).toEqual("Soup Shirt");
   });
@@ -154,10 +157,12 @@ describe('product query', () => {
     const response = await request(server)
       .get("/")
       .send({ query: "{productById (productId: 1) {id name style}}" });
-
+    
     expect(response.body.data.productById.name).toEqual("Soup Shirt");
     expect(response.body.data.productById.id).toEqual(1);
     expect(response.body.data.productById.style).toEqual("artsy");
+    expect(response.body.data.productById.name).not.toEqual("Colorblock Shoes");
+    expect(response.body.data.productById.length).not.toEqual(5);
   })
 
   it("returns a product by slug", async () => {
@@ -167,6 +172,8 @@ describe('product query', () => {
    
     expect(response.body.data.product.name).toEqual("Rainbow Shoes");
     expect(response.body.data.product.slug).toEqual("rainbow-shoes");
+    expect(response.body.data.product.length).not.toEqual(5);
+    expect(response.body.data.product.name).not.toEqual("Colorblock Shoes");
   })
 
   it("returns a product by type", async () => {
@@ -177,6 +184,8 @@ describe('product query', () => {
     expect(response.body.data.productTypes.length).toEqual(2);
     expect(response.body.data.productTypes[0].name).toEqual("Cloth");
     expect(response.body.data.productTypes[1].name).toEqual("Accessories");
+    expect(response.body.data.productTypes.length).not.toEqual(5);
+    expect(response.body.data.productTypes.name).not.toEqual("Shoes");
   })
 
   it("returns a related product", async () => {
